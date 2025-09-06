@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="欢迎!"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_700"
+            android:gravity="center"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:id="@+id/tv_last_close_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="上次关闭时间: 首次启动"
+            android:textSize="14sp"
+            android:textColor="@color/dark_gray"
+            android:background="@drawable/info_background"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/tv_music_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="音乐文件: 未选择"
+            android:textSize="14sp"
+            android:textColor="@color/dark_gray"
+            android:background="@drawable/info_background"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btn_record_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="记录当前时间"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/button_background"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btn_select_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择/下载音乐文件"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/button_background"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btn_view_records"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="查看数据库记录"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/button_background"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btn_clear_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="清除所有数据"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_secondary_background"
+            android:textColor="@color/purple_700"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SQLite数据库记录:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_700"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_database_records"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="数据库记录:\n暂无记录"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:background="@drawable/info_background"
+            android:padding="16dp"
+            android:minHeight="120dp"/>
+
+    </LinearLayout>
+</ScrollView> 

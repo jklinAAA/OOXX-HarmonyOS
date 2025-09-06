@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:gravity="center"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="实验四"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_700"
+        android:layout_marginBottom="40dp"/>
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="用户名"
+        android:inputType="text"
+        android:layout_marginBottom="20dp"
+        android:padding="16dp"
+        android:background="@drawable/edit_text_background"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_gray"/>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:layout_marginBottom="32dp"
+        android:padding="16dp"
+        android:background="@drawable/edit_text_background"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_gray"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/btn_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清除保存的信息"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:layout_marginBottom="40dp"
+        android:textColor="@color/purple_700"/>
+
+    <TextView
+        android:id="@+id/tv_last_login_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="上次登录时间: 首次登录"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@drawable/info_background"/>
+
+</LinearLayout> 

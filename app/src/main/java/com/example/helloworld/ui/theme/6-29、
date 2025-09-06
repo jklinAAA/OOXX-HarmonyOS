@@ -1,0 +1,576 @@
+package com.example.helloworld
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
+import com.example.helloworld.ui.theme.HelloWorldTheme
+import kotlin.random.Random
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            HelloWorldTheme {
+                // 整体背景采用低饱和度浅蓝灰色
+                Surface(color = Color(0xFFF0F7FF)) {
+                    OOXXGameApp()
+                }
+            }
+        }
+    }
+}
+
+enum class CellState {
+    EMPTY, X, O, FIXED_X, FIXED_O
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OOXXGameApp() {
+    var boardSize by remember { mutableStateOf(4) }
+    var board by remember { mutableStateOf(createInitialBoard(boardSize)) }
+    var showWinDialog by remember { mutableStateOf(false) }
+    var showRulesDialog by remember { mutableStateOf(false) }
+    var showSizeMenu by remember { mutableStateOf(false) }
+
+    val history = remember { mutableListOf<List<List<CellState>>>() }
+
+    // 检查游戏是否胜利
+    if (checkGameComplete(board)) {
+        showWinDialog = true
+    }
+
+    // 胜利弹窗
+    if (showWinDialog) {
+        WinDialog(
+            onDismiss = { showWinDialog = false },
+            onNewGame = {
+                showWinDialog = false
+                board = createInitialBoard(boardSize)
+                history.clear()
+            }
+        )
+    }
+
+    // 游戏规则弹窗
+    if (showRulesDialog) {
+        RulesDialog(onDismiss = { showRulesDialog = false })
+    }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = Color.Transparent // 由Surface统一管理背景
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // 顶部工具栏
+            GameToolbar(
+                onRulesClick = { showRulesDialog = true },
+                onResetClick = {
+                    board = createInitialBoard(boardSize)
+                    history.clear()
+                },
+                onSizeMenuClick = { showSizeMenu = true }
+            )
+
+            // 盘面大小选择按钮
+            Button(
+                onClick = { showSizeMenu = true },
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .height(40.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE8F0FE), // 浅蓝按钮背景
+                    contentColor = Color(0xFF1976D2) // 深蓝文本
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("盘面大小: ${boardSize}x$boardSize", fontSize = 16.sp)
+            }
+
+            // 盘面大小选择下拉菜单
+            Box {
+                DropdownMenu(
+                    expanded = showSizeMenu,
+                    onDismissRequest = { showSizeMenu = false },
+                    modifier = Modifier.background(Color.White) // 白色菜单背景
+                ) {
+                    listOf(4, 6, 8, 10).forEach { size ->
+                        DropdownMenuItem(
+                            text = { Text("${size}x$size 盘面", color = Color(0xFF424242)) },
+                            onClick = {
+                                boardSize = size
+                                board = createInitialBoard(size)
+                                history.clear()
+                                showSizeMenu = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            // 游戏网格
+            OOXXBoard(
+                board = board,
+                onCellClick = { row, col ->
+                    if (board[row][col] == CellState.EMPTY ||
+                        board[row][col] == CellState.X ||
+                        board[row][col] == CellState.O) {
+
+                        // 保存当前状态到历史
+                        history.add(board.map { it.toList() })
+
+                        val newBoard = board.map { it.toMutableList() }
+                        newBoard[row][col] = when (newBoard[row][col]) {
+                            CellState.EMPTY -> CellState.X
+                            CellState.X -> CellState.O
+                            CellState.O -> CellState.EMPTY
+                            else -> newBoard[row][col]
+                        }
+                        board = newBoard
+                    }
+                }
+            )
+
+            // 撤销按钮
+            Button(
+                onClick = {
+                    if (history.isNotEmpty()) {
+                        board = history.removeAt(history.size - 1)
+                    }
+                },
+                enabled = history.isNotEmpty(),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .height(48.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (history.isNotEmpty()) Color(0xFFE3F2FD) else Color(0xFFEEEEEE), // 浅蓝/浅灰按钮
+                    contentColor = if (history.isNotEmpty()) Color(0xFF1976D2) else Color(0xFF616161) // 深蓝/中灰文本
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "撤销",
+                        modifier = Modifier.size(20.dp),
+                        tint = if (history.isNotEmpty()) Color(0xFF1976D2) else Color(0xFF616161)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("撤销上一步", fontSize = 16.sp,
+                        color = if (history.isNotEmpty()) Color(0xFF1976D2) else Color(0xFF616161))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun GameToolbar(
+    onRulesClick: () -> Unit,
+    onResetClick: () -> Unit,
+    onSizeMenuClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // 游戏规则按钮
+        IconButton(
+            onClick = onRulesClick,
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE8F0FE)) // 浅蓝背景
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.game_guize),  // 使用本地图片资源
+                contentDescription = "游戏规则",
+                tint = Color(0xFF1976D2), // 深蓝图标
+                modifier = Modifier.size(24.dp)
+            )
+        }
+
+        // 游戏标题（修改为"OOXX"）
+        Text(
+            text = "OOXX",
+            style = MaterialTheme.typography.titleLarge,
+            color = Color(0xFF212121), // 深灰标题色
+            fontWeight = FontWeight.Bold
+        )
+
+        // 重置游戏按钮
+        IconButton(
+            onClick = onResetClick,
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE8F0FE)) // 浅蓝背景
+        ) {
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = "重置游戏",
+                tint = Color(0xFF1976D2), // 深蓝图标
+            )
+        }
+    }
+}
+
+@Composable
+fun WinDialog(
+    onDismiss: () -> Unit,
+    onNewGame: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "恭喜获胜!",
+                style = MaterialTheme.typography.headlineSmall,
+                color = Color(0xFF212121) // 深灰标题色
+            )
+        },
+        text = {
+            Text(
+                text = "你成功解决了这个OOXX谜题!",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0xFF424242) // 中灰文本色
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onNewGame,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE3F2FD), // 浅蓝按钮
+                    contentColor = Color(0xFF1976D2) // 深蓝文本
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("开始新游戏", fontSize = 16.sp)
+            }
+        },
+        shape = RoundedCornerShape(16.dp),
+        containerColor = Color.White, // 白色弹窗背景
+        textContentColor = Color(0xFF424242), // 中灰文本色
+        titleContentColor = Color(0xFF212121) // 深灰标题色
+    )
+}
+
+@Composable
+fun RulesDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "游戏规则",
+                style = MaterialTheme.typography.headlineSmall,
+                color = Color(0xFF212121) // 深灰标题色
+            )
+        },
+        text = {
+            Column {
+                RuleItem(index = 1, text = "每行/列不能有超过2个连续的X或O")
+                RuleItem(index = 2, text = "每行/列中的X和O数量相同")
+                RuleItem(index = 3, text = "每行/列都是唯一的")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE3F2FD), // 浅蓝按钮
+                    contentColor = Color(0xFF1976D2) // 深蓝文本
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("我知道了", fontSize = 16.sp)
+            }
+        },
+        shape = RoundedCornerShape(16.dp),
+        containerColor = Color.White, // 白色弹窗背景
+        textContentColor = Color(0xFF424242), // 中灰文本色
+        titleContentColor = Color(0xFF212121) // 深灰标题色
+    )
+}
+
+@Composable
+fun RuleItem(index: Int, text: String) {
+    Row(
+        modifier = Modifier.padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(24.dp)
+                .clip(CircleShape)
+                .background(Color(0xFF1976D2)), // 深蓝背景
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = index.toString(),
+                color = Color.White, // 白色数字
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color(0xFF424242) // 中灰文本色
+        )
+    }
+}
+
+@Composable
+fun OOXXBoard(
+    board: List<List<CellState>>,
+    onCellClick: (Int, Int) -> Unit
+) {
+    val cellSize = when (board.size) {
+        4 -> 80.dp
+        6 -> 60.dp
+        8 -> 45.dp
+        10 -> 36.dp
+        else -> 50.dp
+    }
+
+    Card(
+        modifier = Modifier
+            .padding(16.dp)
+            .shadow(elevation = 4.dp, shape = RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White) // 白色卡片背景
+    ) {
+        Column {
+            board.forEachIndexed { row, rowItems ->
+                Row {
+                    rowItems.forEachIndexed { col, cellState ->
+                        Box(
+                            modifier = Modifier
+                                .size(cellSize)
+                                .border(
+                                    0.5.dp,
+                                    when (cellState) {
+                                        CellState.FIXED_X, CellState.FIXED_O -> Color(0xFFBDBDBD) // 浅灰边框
+                                        else -> Color(0xFFE0E0E0).copy(alpha = 0.5f) // 更浅灰边框
+                                    },
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                                .clickable { onCellClick(row, col) }
+                                .background(
+                                    when (cellState) {
+                                        CellState.FIXED_X, CellState.FIXED_O -> Color(0xFFF5F5F5) // 浅灰固定格背景
+                                        else -> Color.White // 白色可点击格背景
+                                    }
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = when (cellState) {
+                                    CellState.X, CellState.FIXED_X -> "X"
+                                    CellState.O, CellState.FIXED_O -> "O"
+                                    else -> ""
+                                },
+                                fontSize = when (board.size) {
+                                    4 -> 32.sp
+                                    6 -> 24.sp
+                                    8 -> 18.sp
+                                    10 -> 14.sp
+                                    else -> 20.sp
+                                },
+                                color = when (cellState) {
+                                    CellState.X -> Color(0xFF36F4F4) // 低饱和红色X
+                                    CellState.O -> Color(0xFF2196F3) // 低饱和蓝色O
+                                    CellState.FIXED_X -> Color(0xFF757575) // 中灰固定X
+                                    CellState.FIXED_O -> Color(0xFF757575) // 中灰固定O
+                                    else -> Color.Transparent
+                                },
+                                fontWeight = if (cellState == CellState.FIXED_X || cellState == CellState.FIXED_O) {
+                                    FontWeight.Bold
+                                } else {
+                                    FontWeight.Normal
+                                },
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 创建初始游戏板
+fun createInitialBoard(size: Int): List<List<CellState>> {
+    val board = List(size) { MutableList(size) { CellState.EMPTY } }
+
+    // 随机放置一些固定的X和O
+    val fixedCount = when (size) {
+        4 -> 4
+        6 -> 8
+        8 -> 12
+        10 -> 16
+        else -> size
+    }
+
+    repeat(fixedCount) {
+        var row: Int
+        var col: Int
+        do {
+            row = Random.nextInt(size)
+            col = Random.nextInt(size)
+        } while (board[row][col] != CellState.EMPTY)
+
+        board[row][col] = if (Random.nextBoolean()) CellState.FIXED_X else CellState.FIXED_O
+    }
+
+    return board
+}
+
+// 检查游戏是否完成
+fun checkGameComplete(board: List<List<CellState>>): Boolean {
+    val size = board.size
+
+    // 检查所有格子是否都已填充
+    if (board.any { row -> row.any { it == CellState.EMPTY } }) {
+        return false
+    }
+
+    // 检查每行每列没有超过两个连续的X或O
+    for (i in 0 until size) {
+        // 检查行
+        if (hasThreeConsecutive(board[i])) {
+            return false
+        }
+
+        // 检查列
+        val column = board.map { it[i] }
+        if (hasThreeConsecutive(column)) {
+            return false
+        }
+    }
+
+    // 检查每行每列中的X和O数量相同
+    for (i in 0 until size) {
+        // 检查行
+        val rowX = board[i].count { it == CellState.X || it == CellState.FIXED_X }
+        val rowO = board[i].count { it == CellState.O || it == CellState.FIXED_O }
+        if (rowX != rowO) {
+            return false
+        }
+
+        // 检查列
+        val colX = board.count { it[i] == CellState.X || it[i] == CellState.FIXED_X }
+        val colO = board.count { it[i] == CellState.O || it[i] == CellState.FIXED_O }
+        if (colX != colO) {
+            return false
+        }
+    }
+
+    // 检查每行每列都是唯一的
+    val rows = board.map { row -> row.map {
+        when (it) {
+            CellState.FIXED_X -> CellState.X
+            CellState.FIXED_O -> CellState.O
+            else -> it
+        }
+    }}
+
+    val cols = (0 until size).map { col ->
+        board.map { row ->
+            when (row[col]) {
+                CellState.FIXED_X -> CellState.X
+                CellState.FIXED_O -> CellState.O
+                else -> row[col]
+            }
+        }
+    }
+
+    if (rows.distinct().size != size || cols.distinct().size != size) {
+        return false
+    }
+
+    return true
+}
+
+// 检查是否有三个连续的X或O
+fun hasThreeConsecutive(cells: List<CellState>): Boolean {
+    for (i in 0 until cells.size - 2) {
+        val a = cells[i]
+        val b = cells[i + 1]
+        val c = cells[i + 2]
+
+        if (a != CellState.EMPTY && a == b && b == c) {
+            return true
+        }
+    }
+    return false
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OOXXGamePreview() {
+    HelloWorldTheme {
+        OOXXGameApp()
+    }
+}
