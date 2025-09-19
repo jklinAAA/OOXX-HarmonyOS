@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".ui.BluetoothActivity">
+
+    <!-- 顶部信息栏 -->
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="16dp"
+        android:background="@drawable/top_bar_background">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="蓝牙对战"
+            android:textSize="20sp"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/back_button_background"
+            android:layout_alignParentRight="true"
+            android:minWidth="64dp"
+            android:paddingHorizontal="12dp" />
+    </RelativeLayout>
+
+    <!-- 蓝牙状态和搜索按钮 -->
+    <LinearLayout
+        android:id="@+id/bluetooth_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_bluetooth_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="蓝牙状态: 未开启"
+                android:textSize="16sp"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tv_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设备名称: 未知"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text"
+                android:layout_below="@id/tv_bluetooth_status"
+                android:layout_marginTop="4dp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="0.4"
+            android:text="搜索设备"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/tech_button_primary"
+            android:layout_marginStart="16dp"
+            android:minWidth="120dp" />
+    </LinearLayout>
+
+    <!-- 游戏设置选项 -->
+    <LinearLayout
+        android:id="@+id/game_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bluetooth_control"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="棋盘大小:"
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text"
+            android:layout_marginEnd="12dp" />
+
+        <Spinner
+            android:id="@+id/spinner_board_size"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/spinner_background"
+            android:textColor="@color/primary_text"
+            android:layout_marginEnd="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="难度:"
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text"
+            android:layout_marginEnd="12dp" />
+
+        <Spinner
+            android:id="@+id/spinner_difficulty"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/spinner_background"
+            android:textColor="@color/primary_text" />
+    </LinearLayout>
+
+    <!-- 设备列表区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/game_settings"
+        android:orientation="vertical">
+
+        <!-- 已配对设备 -->
+        <LinearLayout
+            android:id="@+id/pair_devices_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="已配对设备"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold"
+                android:paddingVertical="8dp" />
+
+            <ListView
+                android:id="@+id/lv_paired_devices"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/list_background"
+                android:divider="@drawable/list_divider"
+                android:dividerHeight="1dp" />
+        </LinearLayout>
+
+        <!-- 发现的设备 -->
+        <LinearLayout
+            android:id="@+id/discovered_devices_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发现的设备"
+                    android:textSize="16sp"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold" 
+                    android:paddingVertical="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_scanning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="扫描中..."
+                    android:textSize="14sp"
+                    android:textColor="@color/primary_color"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/lv_discovered_devices"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/list_background"
+                android:divider="@drawable/list_divider"
+                android:dividerHeight="1dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 连接状态提示 -->
+    <RelativeLayout
+        android:id="@+id/connection_status_panel"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/status_bar_background"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress_connection"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:indeterminate="true"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/tv_connection_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正在连接到设备..."
+            android:textSize="16sp"
+            android:textColor="@color/primary_text"
+            android:layout_toRightOf="@id/progress_connection" />
+    </RelativeLayout>
+
+    <!-- 科技风格装饰元素 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/tech_line"
+        android:layout_below="@id/bluetooth_control" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/tech_line"
+        android:layout_below="@id/game_settings" />
+</RelativeLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 正常状态 -->
+    <item android:state_enabled="true" android:state_pressed="false">
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="@color/primary_color_dark" />
+                    <corners android:radius="8dp" />
+                </shape>
+            </item>
+            <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="1dp">
+                <shape>
+                    <gradient
+                        android:startColor="@color/primary_color"
+                        android:endColor="@color/primary_color_dark"
+                        android:angle="90" />
+                    <corners android:radius="7dp" />
+                </shape>
+            </item>
+            <item android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp">
+                <shape>
+                    <solid android:color="@color/primary_color_dark" />
+                    <corners android:radius="6dp" />
+                </shape>
+            </item>
+            <!-- 科技线条效果 -->
+            <item android:left="8dp" android:right="8dp" android:top="2dp">
+                <shape>
+                    <size android:height="1dp" />
+                    <solid android:color="@color/primary_color_light" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    
+    <!-- 按下状态 -->
+    <item android:state_enabled="true" android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="@color/primary_color_dark" />
+                    <corners android:radius="8dp" />
+                </shape>
+            </item>
+            <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="1dp">
+                <shape>
+                    <gradient
+                        android:startColor="@color/primary_color_dark"
+                        android:endColor="@color/primary_color"
+                        android:angle="90" />
+                    <corners android:radius="7dp" />
+                </shape>
+            </item>
+            <item android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp">
+                <shape>
+                    <solid android:color="@color/primary_color" />
+                    <corners android:radius="6dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    
+    <!-- 禁用状态 -->
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@color/disabled_text" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+</selector>

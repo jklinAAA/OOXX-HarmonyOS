@@ -1,0 +1,15 @@
+{
+  "string": [
+    { "name": "app_name", "value": "OOXX游戏" },
+    { "name": "module_desc", "value": "OOXX游戏模块" },
+    { "name": "EntryAbility_desc", "value": "OOXX游戏主入口" },
+    { "name": "EntryAbility_label", "value": "OOXX游戏" },
+    { "name": "board_size", "value": "盘面大小" },
+    { "name": "undo", "value": "撤销上一步" },
+    { "name": "new_game", "value": "开始新游戏" },
+    { "name": "game_rules", "value": "游戏规则" },
+    { "name": "i_know", "value": "我知道了" },
+    { "name": "congratulations", "value": "恭喜获胜!" },
+    { "name": "win_message", "value": "你成功解决了这个OOXX谜题!" }
+  ]
+}

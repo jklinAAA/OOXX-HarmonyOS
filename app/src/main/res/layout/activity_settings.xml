@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".ui.SettingsActivity">
+
+    <!-- 顶部信息栏 -->
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="16dp"
+        android:background="@drawable/top_bar_background">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="游戏设置"
+            android:textSize="20sp"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/back_button_background"
+            android:layout_alignParentRight="true"
+            android:minWidth="64dp"
+            android:paddingHorizontal="12dp" />
+    </RelativeLayout>
+
+    <!-- 设置内容区域 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_bar"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 主题设置 -->
+            <LinearLayout
+                android:id="@+id/theme_settings_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/settings_container_background"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="主题设置"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="主题选择:"
+                        android:textSize="16sp"
+                        android:textColor="@color/secondary_text"
+                        android:layout_marginEnd="16dp" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_default_theme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="默认"
+                            android:textSize="16sp"
+                            android:textColor="@color/secondary_text"
+                            android:layout_marginEnd="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/rb_dark_theme"
+                            android:text="深色"
+                            android:textSize="16sp"
+                            android:textColor="@color/secondary_text"
+                            android:layout_marginEnd="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/rb_neon_theme"
+                            android:text="霓虹"
+                            android:textSize="16sp"
+                            android:textColor="@color/secondary_text" />
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 音效设置 -->
+            <LinearLayout
+                android:id="@+id/sound_settings_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/settings_container_background"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="音效设置"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- 音效开关 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="游戏音效:"
+                        android:textSize="16sp"
+                        android:textColor="@color/secondary_text" />
+
+                    <Switch
+                        android:id="@+id/switch_sound_effects"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text"
+                        android:layout_gravity="right"
+                        android:gravity="right" />
+                </LinearLayout>
+
+                <!-- 音乐开关 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="背景音乐:"
+                        android:textSize="16sp"
+                        android:textColor="@color/secondary_text" />
+
+                    <Switch
+                        android:id="@+id/switch_background_music"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text"
+                        android:layout_gravity="right"
+                        android:gravity="right" />
+                </LinearLayout>
+
+                <!-- 音量调节 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="音量:"
+                        android:textSize="16sp"
+                        android:textColor="@color/secondary_text"
+                        android:layout_marginBottom="8dp" />
+
+                    <SeekBar
+                        android:id="@+id/sb_volume"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:progress="70"
+                        android:progressTint="@color/primary_color"
+                        android:thumbTint="@color/primary_color" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 其他设置 -->
+            <LinearLayout
+                android:id="@+id/other_settings_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/settings_container_background"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="其他设置"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- 自动保存开关 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="自动保存:"
+                        android:textSize="16sp"
+                        android:textColor="@color/secondary_text" />
+
+                    <Switch
+                        android:id="@+id/switch_auto_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text"
+                        android:layout_gravity="right"
+                        android:gravity="right" />
+                </LinearLayout>
+
+                <!-- 清除缓存按钮 -->
+                <Button
+                    android:id="@+id/btn_clear_cache"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="清除缓存"
+                    android:textSize="16sp"
+                    android:textColor="@color/button_text"
+                    android:background="@drawable/tech_button_secondary"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- 恢复默认设置按钮 -->
+                <Button
+                    android:id="@+id/btn_reset_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="恢复默认设置"
+                    android:textSize="16sp"
+                    android:textColor="@color/button_text"
+                    android:background="@drawable/tech_button_secondary" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 主题应用提示 -->
+    <RelativeLayout
+        android:id="@+id/theme_apply_notification"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/status_bar_background"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_theme_apply_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="主题已更改，重新启动应用以生效"
+            android:textSize="16sp"
+            android:textColor="@color/primary_text" />
+
+        <Button
+            android:id="@+id/btn_restart_app"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="立即重启"
+            android:textSize="14sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/tech_button_small"
+            android:layout_marginStart="16dp" />
+    </RelativeLayout>
+</RelativeLayout>

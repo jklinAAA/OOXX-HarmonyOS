@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/SinglePlayerGame",
+    "pages/MultiplayerLobby",
+    "pages/MultiplayerGame",
+    "pages/Second",
+    "pages/DetailPage",
+    "pages/Leaderboard"
+  ]
+}

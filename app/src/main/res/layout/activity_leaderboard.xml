@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".ui.LeaderboardScreenActivity">
+
+    <!-- 顶部信息栏 -->
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="16dp"
+        android:background="@drawable/top_bar_background">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="游戏排行榜"
+            android:textSize="20sp"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/back_button_background"
+            android:layout_alignParentRight="true"
+            android:minWidth="64dp"
+            android:paddingHorizontal="12dp" />
+    </RelativeLayout>
+
+    <!-- 排行榜筛选器 -->
+    <LinearLayout
+        android:id="@+id/filter_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="@drawable/filter_background">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="难度:"
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text"
+            android:layout_marginEnd="8dp" />
+
+        <Spinner
+            android:id="@+id/spinner_difficulty"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/spinner_background"
+            android:textColor="@color/primary_text"
+            android:layout_marginEnd="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="棋盘大小:"
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text"
+            android:layout_marginEnd="8dp" />
+
+        <Spinner
+            android:id="@+id/spinner_board_size"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/spinner_background"
+            android:textColor="@color/primary_text" />
+    </LinearLayout>
+
+    <!-- 排行榜内容区域 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/filter_container">
+
+        <!-- 排行榜列表 -->
+        <ListView
+            android:id="@+id/lv_leaderboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/list_background"
+            android:divider="@drawable/list_divider"
+            android:dividerHeight="1dp" />
+
+        <!-- 无记录提示 -->
+        <RelativeLayout
+            android:id="@+id/no_records_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_empty"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/empty_records"
+                android:alpha="0.5"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/tv_empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂无游戏记录"
+                android:textSize="18sp"
+                android:textColor="@color/secondary_text"
+                android:layout_below="@id/iv_empty" />
+
+            <TextView
+                android:id="@+id/tv_play_game_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="快来玩几局吧！"
+                android:textSize="16sp"
+                android:textColor="@color/secondary_text"
+                android:layout_below="@id/tv_empty_text"
+                android:layout_marginTop="8dp" />
+        </RelativeLayout>
+
+        <!-- 前三名特殊显示区域 -->
+        <LinearLayout
+            android:id="@+id/podium_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <!-- 第二名 -->
+            <RelativeLayout
+                android:id="@+id/second_place"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/second_place_background"
+                android:padding="16dp"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:id="@+id/tv_second_rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="36sp"
+                    android:textColor="@color/second_place_color"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true" />
+
+                <TextView
+                    android:id="@+id/tv_second_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="玩家名称"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/tv_second_rank"
+                    android:layout_marginLeft="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_second_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
+                    android:layout_below="@id/tv_second_name"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/tv_second_rank"
+                    android:layout_marginLeft="8dp" />
+            </RelativeLayout>
+
+            <!-- 第一名 -->
+            <RelativeLayout
+                android:id="@+id/first_place"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/first_place_background"
+                android:padding="16dp"
+                android:layout_marginHorizontal="8dp">
+
+                <TextView
+                    android:id="@+id/tv_first_rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="36sp"
+                    android:textColor="@color/first_place_color"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true" />
+
+                <TextView
+                    android:id="@+id/tv_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="玩家名称"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/tv_first_rank"
+                    android:layout_marginLeft="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_first_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
+                    android:layout_below="@id/tv_first_name"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/tv_first_rank"
+                    android:layout_marginLeft="8dp" />
+            </RelativeLayout>
+
+            <!-- 第三名 -->
+            <RelativeLayout
+                android:id="@+id/third_place"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/third_place_background"
+                android:padding="16dp"
+                android:layout_marginTop="48dp">
+
+                <TextView
+                    android:id="@+id/tv_third_rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textSize="36sp"
+                    android:textColor="@color/third_place_color"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true" />
+
+                <TextView
+                    android:id="@+id/tv_third_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="玩家名称"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/tv_third_rank"
+                    android:layout_marginLeft="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_third_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
+                    android:layout_below="@id/tv_third_name"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/tv_third_rank"
+                    android:layout_marginLeft="8dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- 科技风格装饰元素 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/tech_line"
+        android:layout_below="@id/filter_container" />
+</RelativeLayout>

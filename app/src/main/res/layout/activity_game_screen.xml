@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/game_background"
+    tools:context=".ui.GameScreenActivity">
+
+    <!-- 顶部信息栏 -->
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="16dp"
+        android:background="@drawable/top_bar_background">
+
+        <TextView
+            android:id="@+id/tv_game_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单人模式"
+            android:textSize="18sp"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textSize="20sp"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:background="@drawable/time_background"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/back_button_background"
+            android:layout_alignParentRight="true"
+            android:minWidth="64dp"
+            android:paddingHorizontal="12dp" />
+    </RelativeLayout>
+
+    <!-- 游戏信息区域 -->
+    <LinearLayout
+        android:id="@+id/game_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tv_difficulty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="难度: 简单"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            android:id="@+id/tv_board_size"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="棋盘: 4x4"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="游戏进行中"
+            android:textSize="14sp"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:gravity="right" />
+    </LinearLayout>
+
+    <!-- 游戏棋盘区域 -->
+    <RelativeLayout
+        android:id="@+id/board_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/game_info_container"
+        android:layout_above="@id/action_buttons"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <!-- 棋盘网格将在代码中动态生成 -->
+        <GridLayout
+            android:id="@+id/board_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:columnCount="4"
+            android:rowCount="4"
+            android:background="@drawable/board_background"
+            android:padding="8dp" />
+
+        <!-- 蓝牙对战状态指示器 -->
+        <ImageView
+            android:id="@+id/iv_connection_status"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/connection_disconnected"
+            android:visibility="gone" />
+
+        <!-- 胜利动画遮罩 -->
+        <RelativeLayout
+            android:id="@+id/victory_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/victory_background"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_victory_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="恭喜你获胜！"
+                android:textSize="36sp"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold"
+                android:shadowColor="@color/primary_color"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="8" />
+
+            <TextView
+                android:id="@+id/tv_victory_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用时: 00:00"
+                android:textSize="20sp"
+                android:textColor="@color/secondary_text"
+                android:layout_below="@id/tv_victory_text"
+                android:layout_marginTop="16dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- 底部操作按钮区域 -->
+    <LinearLayout
+        android:id="@+id/action_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@drawable/bottom_bar_background">
+
+        <Button
+            android:id="@+id/btn_undo"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="撤销"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/action_button_background"
+            android:layout_marginEnd="8dp"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/btn_hint"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="提示"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/action_button_background"
+            android:layout_marginHorizontal="8dp" />
+
+        <Button
+            android:id="@+id/btn_solve"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="自动解题"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/action_button_primary"
+            android:layout_marginHorizontal="8dp" />
+
+        <Button
+            android:id="@+id/btn_restart"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="重新开始"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
+            android:background="@drawable/action_button_background"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+</RelativeLayout>

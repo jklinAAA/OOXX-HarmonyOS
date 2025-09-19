@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 基础背景 -->
+    <item>
+        <shape>
+            <solid android:color="@color/surface_color_dark" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    
+    <!-- 内层边框 -->
+    <item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+        <shape>
+            <solid android:color="@color/board_background" />
+            <corners android:radius="6dp" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/board_line" />
+        </shape>
+    </item>
+    
+    <!-- 科技光效 -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/primary_color"
+                android:endColor="@android:color/transparent"
+                android:type="radial"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:gradientRadius="150dp"
+                android:alpha="0.1" />
+        </shape>
+    </item>
+    
+    <!-- 网格装饰 -->
+    <item>
+        <bitmap
+            android:src="@drawable/grid_pattern"
+            android:tileMode="repeat"
+            android:dither="true"
+            android:antialias="true"
+            android:alpha="0.05" />
+    </item>
+</layer-list>
